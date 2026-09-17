@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rakesh Thota — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#132436;
+    --ink-soft:#3c5468;
+    --paper:#F5F4EF;
+    --panel:#ffffff;
+    --line:#dcd9cf;
+    --accent:#C97A2B;
+    --accent-2:#2E6E62;
+    --accent-3:#3A5AA6;
+    --mono: 'IBM Plex Mono', monospace;
+    --disp: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+
+  .bg-grid{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(to right, rgba(19,36,54,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(19,36,54,0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, black 60%, transparent 100%);
+  }
+
+  .wrap{max-width:1040px; margin:0 auto; padding:0 32px; position:relative; z-index:1;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:10;
+    background:rgba(245,244,239,0.86); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:18px 32px;}
+  .logo{font-family:var(--mono); font-size:14px; letter-spacing:0.02em; font-weight:600;}
+  .logo span{color:var(--accent);}
+  .navlinks{display:flex; gap:28px; font-family:var(--mono); font-size:12.5px; letter-spacing:0.03em; text-transform:uppercase;}
+  .navlinks a{text-decoration:none; color:var(--ink-soft); border-bottom:1px solid transparent; padding-bottom:2px; transition:color .15s, border-color .15s;}
+  .navlinks a:hover{color:var(--ink); border-color:var(--accent);}
+  @media (max-width:640px){ .navlinks{display:none;} }
+
+  /* HERO */
+  header.hero{padding:88px 0 56px;}
+  .eyebrow{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--accent-2); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--accent-2); display:inline-block;}
+  h1{
+    font-family:var(--disp); font-weight:700; font-size:clamp(38px,6vw,64px);
+    line-height:1.03; letter-spacing:-0.01em; max-width:820px;
+  }
+  h1 .accent{color:var(--accent);}
+  .tagline{
+    margin-top:22px; max-width:560px; font-size:17px; color:var(--ink-soft);
+  }
+  .hero-meta{
+    margin-top:30px; display:flex; flex-wrap:wrap; gap:10px 22px;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+  }
+  .hero-meta a{text-decoration:none; border-bottom:1px solid var(--line);}
+  .hero-meta a:hover{border-color:var(--accent); color:var(--ink);}
+  .hero-cta{margin-top:34px; display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.02em;
+    padding:12px 20px; border-radius:3px; text-decoration:none; display:inline-block;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--paper);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 6px 0 0 var(--accent);}
+  .btn-ghost{border:1px solid var(--ink); color:var(--ink);}
+  .btn-ghost:hover{transform:translateY(-2px); box-shadow:0 6px 0 0 var(--line);}
+
+  /* DASHBOARD SIGNATURE */
+  .dash{
+    margin-top:56px; border:1px solid var(--line); background:var(--panel); border-radius:6px;
+    box-shadow:0 24px 48px -28px rgba(19,36,54,0.28);
+    overflow:hidden;
+  }
+  .dash-bar{
+    display:flex; align-items:center; gap:8px; padding:10px 16px;
+    border-bottom:1px solid var(--line); font-family:var(--mono); font-size:11.5px; color:var(--ink-soft);
+  }
+  .dot{width:8px; height:8px; border-radius:50%; background:var(--line);}
+  .dash-bar .dot:nth-child(1){background:#d98282;}
+  .dash-bar .dot:nth-child(2){background:#dcc07f;}
+  .dash-bar .dot:nth-child(3){background:#8fb894;}
+  .dash-title{margin-left:10px;}
+  .dash-grid{
+    display:grid; grid-template-columns:repeat(4,1fr);
+  }
+  @media (max-width:760px){ .dash-grid{grid-template-columns:repeat(2,1fr);} }
+  .kpi{
+    padding:22px 20px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .kpi:nth-child(4n){border-right:none;}
+  .kpi-label{font-family:var(--mono); font-size:10.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-soft);}
+  .kpi-value{font-family:var(--disp); font-size:30px; font-weight:700; margin-top:6px;}
+  .kpi-value .unit{font-size:16px; font-weight:600; color:var(--accent);}
+  .kpi-sub{font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:4px;}
+  .chart-row{padding:22px 22px 26px; border-top:1px solid var(--line);}
+  .chart-label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:12px;}
+
+  /* SECTIONS */
+  section{padding:64px 0; border-top:1px solid var(--line);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:34px;}
+  .sec-num{font-family:var(--mono); font-size:12.5px; color:var(--accent);}
+  h2{font-family:var(--disp); font-size:clamp(24px,3.4vw,32px); font-weight:700; letter-spacing:-0.01em;}
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:48px;}
+  @media (max-width:760px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid p{color:var(--ink-soft); font-size:15.5px; margin-bottom:14px;}
+  .fact-list{font-family:var(--mono); font-size:13px;}
+  .fact{display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--line); gap:12px;}
+  .fact-k{color:var(--ink-soft);}
+  .fact-v{text-align:right;}
+
+  /* SKILLS */
+  .skill-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  @media (max-width:760px){ .skill-cols{grid-template-columns:1fr;} }
+  .skill-col{padding:24px 22px; border-right:1px solid var(--line);}
+  .skill-col:last-child{border-right:none;}
+  .skill-col + .skill-col{border-top:none;}
+  @media (max-width:760px){ .skill-col{border-right:none; border-top:1px solid var(--line);} .skill-col:first-child{border-top:none;} }
+  .skill-head{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent-2); margin-bottom:14px;}
+  .skill-col ul{list-style:none;}
+  .skill-col li{font-size:14px; padding:6px 0; color:var(--ink); border-bottom:1px dashed var(--line);}
+  .skill-col li:last-child{border-bottom:none;}
+
+  /* EXPERIENCE */
+  .xp{display:grid; grid-template-columns:200px 1fr; gap:28px; padding:26px 0; border-bottom:1px solid var(--line);}
+  .xp:first-child{padding-top:0;}
+  .xp:last-child{border-bottom:none;}
+  @media (max-width:640px){ .xp{grid-template-columns:1fr; gap:8px;} }
+  .xp-date{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); padding-top:2px;}
+  .xp-role{font-family:var(--disp); font-size:19px; font-weight:600;}
+  .xp-org{font-family:var(--mono); font-size:12.5px; color:var(--accent-2); margin-top:2px; margin-bottom:12px;}
+  .xp ul{padding-left:18px; color:var(--ink-soft); font-size:14.5px;}
+  .xp li{margin-bottom:7px;}
+  .xp li b{color:var(--ink); font-weight:600;}
+
+  /* PROJECTS */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:760px){ .proj-grid{grid-template-columns:1fr;} }
+  .proj-card{
+    border:1px solid var(--line); border-radius:6px; background:var(--panel); padding:26px;
+    display:flex; flex-direction:column; gap:14px; transition:box-shadow .18s ease, transform .18s ease;
+  }
+  .proj-card:hover{box-shadow:0 18px 34px -22px rgba(19,36,54,0.35); transform:translateY(-3px);}
+  .proj-tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
+  .proj-title{font-family:var(--disp); font-size:20px; font-weight:700;}
+  .proj-desc{font-size:14.5px; color:var(--ink-soft);}
+  .proj-metrics{display:flex; gap:18px; flex-wrap:wrap; padding-top:6px; border-top:1px solid var(--line);}
+  .pm{font-family:var(--mono);}
+  .pm-val{font-size:20px; font-weight:600; color:var(--ink);}
+  .pm-lab{font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft);}
+  .proj-stack{display:flex; flex-wrap:wrap; gap:6px; margin-top:2px;}
+  .chip{font-family:var(--mono); font-size:11px; padding:4px 9px; border:1px solid var(--line); border-radius:20px; color:var(--ink-soft);}
+  .proj-link{font-family:var(--mono); font-size:12px; margin-top:4px;}
+  .proj-link a{color:var(--accent-2); text-decoration:none; border-bottom:1px solid var(--line);}
+  .proj-link a:hover{border-color:var(--accent-2);}
+  .proj-link.soon{color:var(--ink-soft); font-style:italic;}
+
+  /* EDUCATION */
+  .edu{display:grid; grid-template-columns:200px 1fr; gap:28px; padding:20px 0; border-bottom:1px solid var(--line);}
+  .edu:last-child{border-bottom:none;}
+  @media (max-width:640px){ .edu{grid-template-columns:1fr; gap:6px;} }
+  .edu-date{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft);}
+  .edu-name{font-family:var(--disp); font-weight:600; font-size:17px;}
+  .edu-deg{font-family:var(--mono); font-size:12.5px; color:var(--accent-2); margin-top:3px;}
+
+  /* CONTACT / FOOTER */
+  footer{padding:70px 0 50px; border-top:1px solid var(--line);}
+  .contact-box{
+    background:var(--ink); color:var(--paper); border-radius:8px; padding:44px 40px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;
+  }
+  .contact-box h2{color:var(--paper);}
+  .contact-box p{color:#c9d2da; font-size:14.5px; margin-top:8px; max-width:340px;}
+  .contact-links{display:flex; flex-direction:column; gap:10px; font-family:var(--mono); font-size:14px;}
+  .contact-links a{text-decoration:none; color:var(--paper); border-bottom:1px solid rgba(245,244,239,0.35); padding-bottom:2px; transition:border-color .15s, color .15s;}
+  .contact-links a:hover{border-color:var(--accent); color:var(--accent);}
+  .foot-note{margin-top:26px; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); text-align:center;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">RT<span>_</span>DATA</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero" id="top">
+    <div class="eyebrow">Data Analyst · Dublin, Ireland</div>
+    <h1>I turn raw data into decisions your <span class="accent">stakeholders</span> actually act on.</h1>
+    <p class="tagline">2.5+ years building dashboards, cleaning up messy datasets, and translating SQL results into insight leadership trusts — currently open to Data Analyst, BI, and Reporting roles across Ireland.</p>
+    <div class="hero-meta">
+      <span>thotarakesh17@gmail.com</span>
+      <span>+353 899707221</span>
+      <a href="https://www.linkedin.com/in/rakesh-thota/" target="_blank">linkedin.com/in/rakesh-thota</a>
+      <a href="https://github.com/thotarakesh2174" target="_blank">github.com/thotarakesh2174</a>
+      <span>Stamp 1G — no sponsorship required</span>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#projects">View projects</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    </div>
+
+    <div class="dash">
+      <div class="dash-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="dash-title">reporting_overview.pbix — last refreshed today</span>
+      </div>
+      <div class="dash-grid">
+        <div class="kpi">
+          <div class="kpi-label">Reporting Efficiency</div>
+          <div class="kpi-value">+35<span class="unit">%</span></div>
+          <div class="kpi-sub">via 10+ Power BI dashboards</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Data Quality Gain</div>
+          <div class="kpi-value">+40<span class="unit">%</span></div>
+          <div class="kpi-sub">20+ issues resolved</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Records Analysed</div>
+          <div class="kpi-value">234<span class="unit">K+</span></div>
+          <div class="kpi-sub">across two portfolio projects</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Model Accuracy</div>
+          <div class="kpi-value">93<span class="unit">%</span></div>
+          <div class="kpi-sub">hybrid NLP classifier</div>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">SQL queries optimised — Jan 2022 to Aug 2024</div>
+        <svg viewBox="0 0 760 90" width="100%" height="90" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#dcd9cf" stroke-width="1" points="0,80 760,80"></polyline>
+          <polyline fill="none" stroke="#C97A2B" stroke-width="2.5"
+            points="0,70 95,64 190,58 285,50 380,44 475,34 570,26 665,16 760,10"></polyline>
+          <g fill="#2E6E62">
+            <circle cx="0" cy="70" r="3"></circle>
+            <circle cx="190" cy="58" r="3"></circle>
+            <circle cx="380" cy="44" r="3"></circle>
+            <circle cx="570" cy="26" r="3"></circle>
+            <circle cx="760" cy="10" r="3.5"></circle>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <div>
+        <p>I'm a Data Analyst based in Dublin with 2.5+ years of hands-on experience turning large, messy datasets into dashboards, KPI reports, and forecasts that hold up under scrutiny. My core loop: pull the data with SQL, clean it until it's trustworthy, visualise it in Power BI, and explain what it means to people who don't have time to read a query.</p>
+        <p>I recently completed an MSc in Computing (Data Analytics) at Dublin City University, adding a stronger statistical and machine-learning foundation on top of a B.Tech in Computer Science Engineering — which is where the two portfolio projects below came from.</p>
+      </div>
+      <div class="fact-list">
+        <div class="fact"><span class="fact-k">Location</span><span class="fact-v">Dublin, Ireland</span></div>
+        <div class="fact"><span class="fact-k">Experience</span><span class="fact-v">2.5+ years</span></div>
+        <div class="fact"><span class="fact-k">Work rights</span><span class="fact-v">Stamp 1G, no sponsorship needed</span></div>
+        <div class="fact"><span class="fact-k">Education</span><span class="fact-v">MSc Computing (Data Analytics), DCU</span></div>
+        <div class="fact"><span class="fact-k">Core stack</span><span class="fact-v">SQL · Power BI · Python</span></div>
+        <div class="fact"><span class="fact-k">Open to</span><span class="fact-v">Data Analyst · BI · Reporting roles</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Skills</h2></div>
+    <div class="skill-cols">
+      <div class="skill-col">
+        <div class="skill-head">Query &amp; Data</div>
+        <ul>
+          <li>SQL — Joins, CTEs, Window Functions</li>
+          <li>Query Optimisation</li>
+          <li>ETL &amp; Data Wrangling</li>
+          <li>Data Quality &amp; Validation</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-head">BI &amp; Visualization</div>
+        <ul>
+          <li>Power BI — DAX, Power Query</li>
+          <li>Dashboard Development</li>
+          <li>KPI Reporting</li>
+          <li>Google Sheets · Looker</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-head">Programming &amp; Analysis</div>
+        <ul>
+          <li>Python — Pandas, NumPy, Scikit-learn</li>
+          <li>Statistical Analysis</li>
+          <li>NLP &amp; Machine Learning</li>
+          <li>Advanced Excel</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Experience</h2></div>
+    <div class="xp">
+      <div class="xp-date">Jan 2022 — Aug 2024</div>
+      <div>
+        <div class="xp-role">Data Analyst</div>
+        <div class="xp-org">Vijaya Kilari Construction Co. · India</div>
+        <ul>
+          <li>Developed <b>10+ Power BI dashboards</b> and automated reporting solutions, improving reporting efficiency by <b>35%</b></li>
+          <li>Optimised <b>50+ SQL queries</b> and performed statistical analysis on large datasets to support business decision-making</li>
+          <li>Resolved <b>20+ data quality issues</b>, improving dataset reliability and reporting consistency by <b>40%</b></li>
+          <li>Built KPI reports and operational dashboards for stakeholders across cross-functional teams</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Projects</h2></div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-tag">NLP · Machine Learning</div>
+        <div class="proj-title">Hybrid Fake News Detection &amp; AI Analytics System</div>
+        <p class="proj-desc">A hybrid framework combining traditional ML models with transformer-based LLMs to classify news articles at scale, backed by full data visualisation and reporting.</p>
+        <div class="proj-metrics">
+          <div class="pm"><div class="pm-val">134K+</div><div class="pm-lab">records processed</div></div>
+          <div class="pm"><div class="pm-val">93%+</div><div class="pm-lab">model accuracy</div></div>
+        </div>
+        <div class="proj-stack">
+          <span class="chip">BERT</span><span class="chip">RoBERTa</span><span class="chip">NLP</span><span class="chip">Python</span><span class="chip">SQL</span>
+        </div>
+        <div class="proj-link"><a href="https://github.com/thotarakesh2174/fake-news-detection" target="_blank">View on GitHub →</a></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-tag">Forecasting · BI</div>
+        <div class="proj-title">Sales Forecasting &amp; Business Dashboard</div>
+        <p class="proj-desc">KPI dashboards with trend analysis and forecasting models built to support planning and operational decision-making, plus automated reporting workflows.</p>
+        <div class="proj-metrics">
+          <div class="pm"><div class="pm-val">100K+</div><div class="pm-lab">records analysed</div></div>
+          <div class="pm"><div class="pm-val">Auto</div><div class="pm-lab">reporting workflow</div></div>
+        </div>
+        <div class="proj-stack">
+          <span class="chip">Power BI</span><span class="chip">Forecasting</span><span class="chip">KPI Design</span><span class="chip">Excel</span>
+        </div>
+        <div class="proj-link"><a href="https://github.com/thotarakesh2174" target="_blank">View on GitHub →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Education</h2></div>
+    <div class="edu">
+      <div class="edu-date">Sep 2024 — Oct 2025</div>
+      <div>
+        <div class="edu-name">Dublin City University</div>
+        <div class="edu-deg">MSc Computing — Data Analytics</div>
+      </div>
+    </div>
+    <div class="edu">
+      <div class="edu-date">Aug 2019 — May 2023</div>
+      <div>
+        <div class="edu-name">Lovely Professional University</div>
+        <div class="edu-deg">B.Tech — Computer Science Engineering</div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Let's talk data</h2></div>
+    <div class="contact-box">
+      <div>
+        <h2>Hiring a Data Analyst?</h2>
+        <p>I'm currently looking for Data Analyst, BI, and Reporting roles in Dublin and across Ireland — open to full-time, graduate, and contract opportunities.</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:thotarakesh17@gmail.com">thotarakesh17@gmail.com</a>
+        <a href="tel:+353899707221">+353 899707221</a>
+        <a href="https://www.linkedin.com/in/rakesh-thota/" target="_blank">linkedin.com/in/rakesh-thota</a>
+        <a href="https://github.com/thotarakesh2174" target="_blank">github.com/thotarakesh2174</a>
+      </div>
+    </div>
+    <div class="foot-note">Rakesh Thota — Dublin, Ireland — Stamp 1G, full working rights, no sponsorship required</div>
+  </footer>
+
+</div>
+</body>
+</html>
